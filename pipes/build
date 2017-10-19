@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cc -Wall -g -o pipes pipes.c

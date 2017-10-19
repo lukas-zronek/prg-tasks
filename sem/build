@@ -1,0 +1,4 @@
+#!/bin/sh
+cc -Wall -g -c lib.c
+cc -Wall -g -c main.c
+cc -Wall -g -o sem lib.o main.o

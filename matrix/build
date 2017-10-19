@@ -1,0 +1,8 @@
+#!/bin/sh
+
+CFLAGS=-Wall
+
+cc $CFLAGS matrix.c -o matrix
+cc $CFLAGS matrix2.c -o matrix2
+cc $CFLAGS -lpthread matrix_thread.c -o matrix_thread
+cc $CFLAGS -lpthread matrix_thread2.c -o matrix_thread2

@@ -1,0 +1,2 @@
+Which C function is used to read byte-wise from a stream?;fgets();fprintf();read();fread();1
+Where is printf() defined?;"stdio.h";<stdio.h>;<stdlib.h>;<unistd.h>;2

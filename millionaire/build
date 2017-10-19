@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cc -Wall -pedantic -ansi -g -o millionaire millionaire.c

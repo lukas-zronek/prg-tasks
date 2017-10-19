@@ -1,0 +1,5 @@
+#!/bin/sh
+CC=cc
+$CC -Wall -c main.c
+$CC -Wall -c dec2bin.c
+$CC -g -lm -o dec2bin dec2bin.o main.o

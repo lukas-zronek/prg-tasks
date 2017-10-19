@@ -1,0 +1,8 @@
+#!/bin/sh
+
+cc -Wall -g -c lib.c
+cc -Wall -g -c recv.c
+cc -Wall -g -c send.c
+
+cc -Wall -g lib.o recv.o -o recv
+cc -Wall -g lib.o send.o -o send

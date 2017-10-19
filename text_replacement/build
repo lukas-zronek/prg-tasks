@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cc -std=gnu89 -pedantic -Wall -g -o text_replacement text_replacement.c

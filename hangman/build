@@ -1,0 +1,2 @@
+#!/bin/sh
+cc -Wall -pedantic -ansi -g -o hangman hangman.c

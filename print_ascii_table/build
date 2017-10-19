@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cc -g -Wall -ansi -pedantic -o print_ascii_table print_ascii_table.c

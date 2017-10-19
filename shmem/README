@@ -1,0 +1,9 @@
+Training Task: Shared Memory and Semaphores
+
+Es sind zwei Programme in einem: Programm A startet man mit Parameter "client":
+
+./shm client
+
+Programm B startet man mit dem Parameter "server":
+
+./shm server

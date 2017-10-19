@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cc -std=c89 -Wall -pedantic -g -o calculator calculator.c -lm
