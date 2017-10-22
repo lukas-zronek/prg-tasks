@@ -141,7 +141,7 @@ char *read_line(char *prompt, int buffer_size)
 	buffer = (char *)malloc(buffer_size);
 
 	if (buffer == NULL) {
-		fprintf(stderr, "Allocating buffer failed.");
+		fprintf(stderr, "Allocating buffer failed.\n");
 		return NULL;
 	}
 

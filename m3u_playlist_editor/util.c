@@ -23,7 +23,7 @@ char *read_line(char *prompt, int buffer_size)
 	buffer = (char *)malloc(buffer_size);
 
 	if (buffer == NULL) {
-		fprintf(stderr, "Allocating buffer failed.");
+		fprintf(stderr, "Allocating buffer failed.\n");
 		return NULL;
 	}
 
@@ -191,7 +191,7 @@ char *format_length(int n)
 	format = (char *)malloc(max_length);
 
 	if (format == NULL) {
-		fprintf(stderr, "Malloc failed.");
+		fprintf(stderr, "Malloc failed.\n");
 		return NULL;
 	}
 
