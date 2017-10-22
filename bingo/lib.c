@@ -192,7 +192,6 @@ int read_int(char *prompt, int *n, int buffer_size)
 		input = read_line(prompt, buffer_size);
 
 		if (input == NULL) {
-			FREE(input);
 			return 1;
 		}
 
