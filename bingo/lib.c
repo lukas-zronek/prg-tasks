@@ -76,11 +76,14 @@ char *receive_message(long int id, long int type)
 
 		s = (char *)malloc(s_size);
 
-		if (s != NULL) {
-			if (strncpy(s, m.mtext, s_size) != s) {
-				fprintf(stderr, "Error: copying mtext failed.\n");
-				FREE(s);
-			}
+		if (s == NULL) {
+			fprintf(stderr, "Allocating string failed.\n");
+			return NULL;
+		}
+
+		if (strncpy(s, m.mtext, s_size) != s) {
+			fprintf(stderr, "Error: copying mtext failed.\n");
+			FREE(s);
 		}
 	}
 
