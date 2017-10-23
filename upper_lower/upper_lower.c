@@ -5,6 +5,8 @@
  *
  */
 
+#define _POSIX_C_SOURCE 200809L
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -87,9 +89,10 @@ int main(void)
  */
 char *convertCase(char *s, int f)
 {
+	int i = 0;
 	size_t length = strnlen(s, MAX_INPUT);
 
-	for (int i = 0; i < length; i++) {
+	for (i = 0; i < length; i++) {
 		switch(f) {
 			case TO_UPPER: s[i] = toupper(s[i]); break;
 			case TO_LOWER: s[i] = tolower(s[i]); break;
