@@ -11,7 +11,7 @@
 #define MSG_TYPE_OUT 2
 #define MSG_ID_FILE "./send.c"
 
-#define START "I have thought of a random number in between 0 and 100? What's your guess?\n"
+#define START "I have thought of a random number in between 0 and 100? What's your guess? (Enter -1 to quit)\n"
 #define CORRECT "BINGO\n"
 #define WRONG1 "Wrong guess, you have one more tries.\n"
 #define WRONG2 "Wrong guess, you have two more tries.\n"
@@ -23,6 +23,7 @@ int main(int argc, char **argv)
 	long int msq = 0;
 	int n = 0;
 	int r = 0;
+	int i = 0;
 
 	msq = create_queue(MSG_ID_FILE);
 
@@ -39,20 +40,20 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	r = get_rand(100);
+	if (send_message(msq, MSG_TYPE_OUT, START) != 0) {
+		return EXIT_FAILURE;
+	}
 
-	printf("r: %d\n", r);
-
-	for (int i = 0; i <= 4; i++) {
+	while (1) {
 		if (i == 0) {
-			if (send_message(msq, MSG_TYPE_OUT, START) != 0) {
-				return EXIT_FAILURE;
-			}
+			r = get_rand(100);
+			printf("r: %d\n", r);
 		} else if (n == r) {
 			if (send_message(msq, MSG_TYPE_OUT, CORRECT) != 0) {
 				return EXIT_FAILURE;
 			}
-			break;
+			i = 0;
+			continue;
 		} else {
 			if (i == 1) {
 				if (send_message(msq, MSG_TYPE_OUT, WRONG3) != 0) {
@@ -70,16 +71,20 @@ int main(int argc, char **argv)
 				if (send_message(msq, MSG_TYPE_OUT, LOST) != 0) {
 					return EXIT_FAILURE;
 				}
+				i = 0;
+				continue;
 			}
-		}
-
-		if (i == 4) {
-			break;
 		}
 
 		if (receive_int(msq, MSG_TYPE_IN, &n) != 0) {
 			return EXIT_FAILURE;
 		}
+
+		if (n == -1) {
+			break;
+		}
+
+		i++;
 	}
 
 	return EXIT_SUCCESS;

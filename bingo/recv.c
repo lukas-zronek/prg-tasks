@@ -42,6 +42,11 @@ int main(int argc, char **argv)
 		if (send_int(msq, MSG_TYPE_OUT, n) != 0) {
 			return EXIT_FAILURE;
 		}
+
+		if (n == -1) {
+			break;
+		}
+
 	}
 
 	return EXIT_SUCCESS;

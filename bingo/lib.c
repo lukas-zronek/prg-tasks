@@ -132,7 +132,7 @@ int receive_int(long int id, long int type, int *n)
 
         *n = (int) strtod(text, &endptr);
 
-        if (*endptr != '\0' || *n < 0) {
+        if (*endptr != '\0') {
                 fprintf(stderr, "strtod failed\n");
 		return 1;
         }
