@@ -9,7 +9,7 @@
 
 #define MSG_TYPE_IN 1
 #define MSG_TYPE_OUT 2
-#define MSG_ID_FILE "./send.c"
+#define MSG_ID_FILE "./keyfile"
 
 #define START "I have thought of a random number in between 0 and 100? What's your guess? (Enter -1 to quit)\n"
 #define CORRECT "BINGO\n"
