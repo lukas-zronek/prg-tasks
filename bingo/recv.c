@@ -10,7 +10,6 @@
 
 #define MSG_TYPE_OUT 1
 #define MSG_TYPE_IN 2
-#define MSG_ID_FILE "./keyfile"
 
 #define PROMPT "Enter your guess"
 

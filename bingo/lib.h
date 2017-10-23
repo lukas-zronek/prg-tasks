@@ -15,6 +15,7 @@
 #define MTYPE 42
 #define MSGMAX 1024 /* must be greater than 0 */
 #define SEM_PERM 0600
+#define MSG_ID_FILE "./keyfile"
 
 #define FREE(val) if (val != NULL) { free(val); val = NULL; }
 
