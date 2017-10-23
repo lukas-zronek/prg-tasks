@@ -79,7 +79,7 @@ char *receive_message(long int id, long int type)
 		if (s != NULL) {
 			if (strncpy(s, m.mtext, s_size) != s) {
 				fprintf(stderr, "Error: copying mtext failed.\n");
-				s = NULL;
+				FREE(s);
 			}
 		}
 	}
