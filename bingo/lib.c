@@ -29,6 +29,16 @@ long int create_queue(char *filename)
 }
 
 /* returns 0 on success and 1 otherwise */
+int delete_queue(long int id)
+{
+	if (msgctl(id, IPC_RMID, NULL) != 0) {
+		perror("msgctl");
+		return 1;
+	}
+	return 0;
+}
+
+/* returns 0 on success and 1 otherwise */
 int send_message(long int id, long int type, char *text)
 {
 	msg m;

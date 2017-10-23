@@ -24,6 +24,7 @@ typedef struct msg_s {
 } msg;
 
 long int create_queue(char *);
+int delete_queue(long int);
 int send_message(long int, long int, char *);
 char *receive_message(long int, long int);
 int send_int(long int, long int, int);

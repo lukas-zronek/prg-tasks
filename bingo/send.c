@@ -30,6 +30,15 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
+	if (argc > 1) {
+		if (strcmp(argv[1], "cleanup") == 0) {
+			if (delete_queue(msq) == 0) {
+				return EXIT_SUCCESS;
+			}
+		}
+		return EXIT_FAILURE;
+	}
+
 	r = get_rand(100);
 
 	printf("r: %d\n", r);
