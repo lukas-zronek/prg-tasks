@@ -148,8 +148,12 @@ int receive_int(long int id, long int type, int *n)
 char *read_line(char *prompt, int buffer_size)
 {
 	char *buffer = NULL;
-	char *newline_ptr = NULL;
 	char *result = NULL;
+	int newline_span = 0;
+
+	if (buffer_size <= 0) {
+		return NULL;
+	}
 
 	buffer = (char *)malloc(buffer_size);
 
@@ -158,25 +162,24 @@ char *read_line(char *prompt, int buffer_size)
 		return NULL;
 	}
 
-	while (1) {
-		printf("%s> ", prompt);
+	printf("%s> ", prompt);
 
-		if (fgets(buffer, buffer_size, stdin) != NULL) {
-			if ((newline_ptr = strchr(buffer, '\n')) != NULL) {
-				*newline_ptr = '\0';
-				break;
-			} else {
-				fprintf(stderr, "Error: Input too long.\n");
+	if (fgets(buffer, buffer_size, stdin) != NULL) {
+		newline_span = strcspn(buffer, "\n");
+		if ((newline_span + 1) == buffer_size) {
+			fprintf(stderr, "Warning: Input truncated.\n");
 
-				/* clear stdin */
-				fseek(stdin, 0, SEEK_SET);
-			}
-		} else {
-			if (ferror(stdin) || feof(stdin) != 0) {
-				FREE(buffer);
-				return NULL;
-			}
+			/* clear stdin */
+			fseek(stdin, 0, SEEK_SET);
 		}
+		buffer[newline_span] = '\0';
+	} else {
+		if (ferror(stdin)) {
+			perror("Error: fgets failed");
+		}
+		clearerr(stdin);
+		FREE(buffer);
+		return NULL;
 	}
 
 	result = copy_string(buffer);
