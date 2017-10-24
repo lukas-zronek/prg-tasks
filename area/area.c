@@ -154,6 +154,9 @@ char input_char()
 			return c;
 		}
 	} else {
+		if (ferror(stdin)) {
+			perror("Error: fgets failed");
+		}
 		clearerr(stdin);
 	}
 
@@ -199,6 +202,9 @@ double *input_multiple_double(int count, char *prompt)
 				break;
 			}
 		} else {
+			if (ferror(stdin)) {
+				perror("Error: fgets failed");
+			}
 			clearerr(stdin);
 		}
 	}
