@@ -153,6 +153,8 @@ char input_char()
 			c = toupper(c);
 			return c;
 		}
+	} else {
+		clearerr(stdin);
 	}
 
 	return -1;
@@ -196,6 +198,8 @@ double *input_multiple_double(int count, char *prompt)
 			if (count == i) {
 				break;
 			}
+		} else {
+			clearerr(stdin);
 		}
 	}
 
