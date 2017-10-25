@@ -311,6 +311,10 @@ char *random_word_from_file(const char *filename)
 		return NULL;
 	}
 
+	/*
+	 * Warning: rand() is not cryptographically secure and
+	 * may return deterministic values
+	 */
 	srand(time(NULL));
 
 	random_number = rand() % list_length;

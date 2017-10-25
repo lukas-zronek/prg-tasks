@@ -93,6 +93,9 @@ int sem_set(int semid, int num, int value)
 /*
  * generates a random number between min and max, max should be greater than min
  * random number generator is seeded on first use
+ *
+ * Warning: This function is not cryptographically secure and
+ * may return deterministic values
  */
 int random_int(int min, int max)
 {

@@ -122,6 +122,10 @@ Press [A/B/C/D] to guess\nPress [Q] to give up\nPress [J] to use a 50/50 joker\n
 			joker = -1;
 
 			for (i = 0; i < 2; i++) {
+				/* Warning: rand() is not
+				 * cryptographically secure and
+				 * may return deterministic values
+				 */
 				random_number = (rand() % 4);
 
 				if (random_number + 1 == next->answer) {
@@ -447,6 +451,10 @@ linked_list *randomize_questions(linked_list *l, int question_count)
 	int j = 0;
 
 	for (i = 0; i < question_count; i++) {
+		/* Warning: rand() is not
+		 * cryptographically secure and
+		 * may return deterministic values
+		 */
 		random_number = rand() % question_count;
 
 		if (random_number == 0) {
@@ -480,6 +488,10 @@ void randomize_answers(linked_list *l)
 	int i = 0;
 
 	for (i = 0; i < 8; i++) {
+		/* Warning:
+		 * rand() is not cryptographically secure
+		 * and may return deterministic values
+		 */
 		random_number = rand() % 4;
 
 		if (random_number == 0) {

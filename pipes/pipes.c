@@ -155,6 +155,10 @@ cleanup_child:
 	}
 }
 
+/*
+ * Warning: This function is not cryptographically secure and
+ * may return deterministic values
+ */
 int get_rand(int max)
 {
 	static int seeded = 0;
