@@ -105,8 +105,8 @@ int send_int(long int id, long int type, int n)
 {
 	char buffer[MSGMAX] = {0};
 
-	if (sprintf(buffer, "%d", n) < 0) {
-		fprintf(stderr, "Error: sprintf failed\n");
+	if (snprintf(buffer, sizeof(buffer), "%d", n) < 0) {
+		fprintf(stderr, "Error: snprintf failed\n");
 		return 1;
 	}
 

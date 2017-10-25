@@ -64,8 +64,8 @@ int main(int argc, char **argv)
 
 		n = get_rand(128);
 
-		if (sprintf(buffer, "%d", n) < 0) {
-			fprintf(stderr, "sprintf failed\n");
+		if (snprintf(buffer, sizeof(buffer), "%d", n) < 0) {
+			fprintf(stderr, "snprintf failed\n");
 			error = 1;
 			goto cleanup;
 		}
@@ -113,8 +113,8 @@ int main(int argc, char **argv)
 			goto cleanup;
 		}
 
-		if (sprintf(buffer, "%d", is_prime(n)) < 0) {
-			fprintf(stderr, "sprintf failed\n");
+		if (snprintf(buffer, sizeof(buffer), "%d", is_prime(n)) < 0) {
+			fprintf(stderr, "snprintf failed\n");
 			error = 1;
 			goto cleanup;
 		}
