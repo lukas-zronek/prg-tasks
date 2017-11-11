@@ -191,6 +191,12 @@ char *format_length(int n)
 	char *format = NULL;
 	const int max_length = 6;
 
+        /* limit output to 59:59 (3599 = 59 * 60 + 59) */
+        if (n < 0 || n > 3599) {
+                fprintf(stderr, "Error: 0 < n < 3599\n");
+                return NULL;
+        }
+
 	format = (char *)malloc(max_length);
 
 	if (format == NULL) {
@@ -201,7 +207,6 @@ char *format_length(int n)
 	minutes = n / 60;
 	seconds = n % 60;
 
-	// TODO: check for overflow
 	if (snprintf(format, max_length, "%02d:%02d", minutes, seconds) < 0) {
 		return NULL;
 	}
