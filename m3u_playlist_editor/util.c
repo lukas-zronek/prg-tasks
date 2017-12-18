@@ -47,13 +47,15 @@ char *read_line(char *prompt, int buffer_size)
 			perror("Error: fgets failed");
 		}
 		clearerr(stdin);
-		FREE(buffer);
+		free(buffer);
+		buffer = NULL;
 		return NULL;
 	}
 
 	result = copy_string(buffer);
 
-	FREE(buffer);
+	free(buffer);
+	buffer = NULL;
 
 	return result;
 }
@@ -81,14 +83,16 @@ int read_int(char *prompt, int *n, int buffer_size)
 		}
 
 		if (*input == '\0') {
-			FREE(input);
+			free(input);
+			input = NULL;
 			continue;
 		}
 
 		result = (int)strtod(input, &input_endptr);
 
 		if (*input_endptr != '\0') {
-			FREE(input);
+			free(input);
+			input = NULL;
 			input_endptr = NULL;
 			continue;
 		}
@@ -96,7 +100,8 @@ int read_int(char *prompt, int *n, int buffer_size)
 		break;
 	}
 
-	FREE(input);
+	free(input);
+	input = NULL;
 
 	*n = result;
 
@@ -123,7 +128,8 @@ char *copy_string(char *src)
 
 	if (strncpy(dst, src, src_length + 1) != dst) {
 		fprintf(stderr, "strncpy failed.\n");
-		FREE(dst);
+		free(dst);
+		dst = NULL;
 		return NULL;
 	}
 

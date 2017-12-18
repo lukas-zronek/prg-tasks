@@ -30,7 +30,8 @@ m3u_file *create_m3u_file(char *filename)
 		f->filename = copy_string(filename);
 
 		if (f->filename == NULL) {
-			FREE(f);
+			free(f);
+			f = NULL;
 			return NULL;
 		}
 	}
@@ -56,7 +57,8 @@ int add_mp3_files(m3u_file *m3u_file, char **mp3_files, int mp3_files_length)
 		}
 
 		if (read_id3(m3u_file, filename) != 0) {
-			FREE(filename);
+			free(filename);
+			filename = NULL;
 			return 1;
 		}
 	}
@@ -163,7 +165,8 @@ int read_id3(m3u_file *m3u_file, char *filename)
 				if (*str_endptr != '\0' || length < 0) {
 					length = 0;
 				}
-				FREE(str);
+				free(str);
+				str = NULL;
 				break;
 			default:
 				assert(1);
@@ -185,9 +188,12 @@ int read_id3(m3u_file *m3u_file, char *filename)
 	}
 
 	if (error == 1) {
-		FREE(str);
-		FREE(artist);
-		FREE(title);
+		free(str);
+		str = NULL;
+		free(artist);
+		artist = NULL;
+		free(title);
+		title = NULL;
 	}
 
 	return error;
@@ -204,12 +210,15 @@ void free_sll(m3u_data **head)
         c = *head;
 
         while (c != NULL) {
-		FREE(c->filename);
-		FREE(c->artist);
-		FREE(c->title);
+		free(c->filename);
+		c->filename = NULL;
+		free(c->artist);
+		c->artist = NULL;
+		free(c->title);
+		c->title = NULL;
 		c->length = 0;
                 n = c->next;
-                FREE(c);
+                free(c);
                 c = n;
         }
 
@@ -236,7 +245,8 @@ void print_sll(m3u_data *head)
 
 	printf("Total Length: %s\n", total_length_format == NULL ? "00:00": total_length_format);
 
-	FREE(total_length_format);
+	free(total_length_format);
+	total_length_format = NULL;
 }
 
 void print_m3u_data(m3u_data *d, int number)
@@ -247,7 +257,8 @@ void print_m3u_data(m3u_data *d, int number)
 
 	printf("[ %3d] %s %s -- %s\n", number, length_format == NULL ? "00:00" : length_format, d->artist, d->title);
 
-	FREE(length_format);
+	free(length_format);
+	length_format = NULL;
 }
 
 /*
@@ -326,9 +337,12 @@ int parse_m3u_file(m3u_file *m3u_file)
 
 		if (access(filename, F_OK) == -1) {
 			fprintf(stderr, "Warning: mp3 file '%s' is missing.\n", filename);
-			FREE(artist);
-			FREE(title);
-			FREE(filename);
+			free(artist);
+			artist = NULL;
+			free(title);
+			title = NULL;
+			free(filename);
+			filename = NULL;
 		} else {
 			if (add_m3u_data(m3u_file, filename, artist, title, length) != 0) {
 				error = 1;
@@ -347,9 +361,12 @@ int parse_m3u_file(m3u_file *m3u_file)
 	}
 
 	if (error != 0) {
-		FREE(artist);
-		FREE(title);
-		FREE(filename);
+		free(artist);
+		artist = NULL;
+		free(title);
+		title = NULL;
+		free(filename);
+		filename = NULL;
 		length = 0;
 	}
 
@@ -381,7 +398,8 @@ int add_m3u_data(m3u_file *m3u_file, char *filename, char *artist, char *title, 
 			input = read_line("Title        ", MAX_ID3_FIELD_LENGTH);
 
 			if (input == NULL || *input == '\0') {
-				FREE(input)
+				free(input);
+				input = NULL;
 			} else {
 				title = input;
 				break;
@@ -394,7 +412,8 @@ int add_m3u_data(m3u_file *m3u_file, char *filename, char *artist, char *title, 
 			input = read_line("Interpret    ", MAX_ID3_FIELD_LENGTH);
 
 			if (input == NULL || *input == '\0') {
-				FREE(input)
+				free(input);
+				input = NULL;
 			} else {
 				artist = input;
 				break;
@@ -411,8 +430,10 @@ int add_m3u_data(m3u_file *m3u_file, char *filename, char *artist, char *title, 
 
 	if (d == NULL) {
 		fprintf(stderr, "Error: Allocating m3u_data structure failed.\n");
-		FREE(artist);
-		FREE(title);
+		free(artist);
+		artist = NULL;
+		free(title);
+		title = NULL;
 		return 1;
 	} else {
 		d->filename = filename;
@@ -456,15 +477,18 @@ int write_m3u_file(m3u_file *m3u_file)
 				*confirm = toupper(*confirm);
 
 				if (*confirm == 'Y') {
-					FREE(confirm);
+					free(confirm);
+					confirm = NULL;
 					break;
 				} else if (*confirm == 'N') {
-					FREE(confirm);
+					free(confirm);
+					confirm = NULL;
 					return 1;
 				}
 			}
 
-			FREE(confirm);
+			free(confirm);
+			confirm = NULL;
 		}
 	}
 
@@ -513,11 +537,13 @@ int interactive(m3u_file *m3u_file)
 						input = read_line("Filename", MAX_FILENAME_LENGTH);
 
 						if (input != NULL && *input != '\0' && add_mp3_files(m3u_file, &input, 1) == 0) {
-							FREE(input);
+							free(input);
+							input = NULL;
 							break;
 						}
 
-						FREE(input);
+						free(input);
+						input = NULL;
 					}
 					break;
 				case 'D':
@@ -550,11 +576,13 @@ int interactive(m3u_file *m3u_file)
 
 						if (input != NULL && *input != '\0') {
 							search_sll(m3u_file, input);
-							FREE(input);
+							free(input);
+							input = NULL;
 							break;
 						}
 
-						FREE(input);
+						free(input);
+						input = NULL;
 					}
 
 					break;
@@ -573,10 +601,11 @@ int interactive(m3u_file *m3u_file)
 					}
 
 					if (*input != '\0') {
-						FREE(m3u_file->filename);
+						free(m3u_file->filename);
 						m3u_file->filename = input;
 					} else {
-						FREE(input);
+						free(input);
+						input = NULL;
 					}
 
 					write_m3u_file(m3u_file);
@@ -593,7 +622,8 @@ int interactive(m3u_file *m3u_file)
 					fprintf(stderr, "Error: Unknown command\n");
 					break;
 			}
-		FREE(option);
+		free(option);
+		option = NULL;
 		}
 	}
 

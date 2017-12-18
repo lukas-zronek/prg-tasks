@@ -16,7 +16,6 @@
 
 #define DELIMITER ';'
 #define MAX_LEN 80
-#define FREE(val) free(val); val = NULL;
 
 typedef enum { false, true, empty } bool;
 
@@ -239,13 +238,15 @@ void free_linked_list(linked_list **p)
 	l = *p;
 
 	while (l != NULL) {
-		FREE(l->question);
+		free(l->question);
+		l->question = NULL;
 		for (i = 0; i < 4; i++) {
-			FREE(l->answers[i]);
+			free(l->answers[i]);
+			l->answers[i] = NULL;
 		}
 		l->answer = 0;
 		n = l->next;
-		FREE(l);
+		free(l);
 		l = n;
 	}
 
@@ -359,7 +360,8 @@ linked_list *parse_question_file(const char *filename, int *question_count)
 			if (strncpy(str, buffer, str_len) != str) {
 				fprintf(stderr, "Error: Parsing question file failed: strncpy() failed\n");
 				error = 1;
-				FREE(str);
+				free(str);
+				str = NULL;
 				break;
 			}
 
@@ -381,7 +383,8 @@ linked_list *parse_question_file(const char *filename, int *question_count)
 					break;
 				default:
 					fprintf(stderr, "Error: Parsing question file failed: question record has too many columns\n");
-					FREE(str);
+					free(str);
+					str = NULL;
 					error = 1;
 					break;
 			}

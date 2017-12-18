@@ -62,7 +62,8 @@ int main(int argc, char *argv[])
 
 	if (cflag != 1) {
 		if (parse_m3u_file(m3u_file) != 0) {
-			FREE(m3u_file);
+			free(m3u_file);
+			m3u_file = NULL;
 			return EXIT_FAILURE;
 		} else {
 			print_sll(m3u_file->head);
@@ -87,8 +88,10 @@ int main(int argc, char *argv[])
 
 	free_sll(&m3u_file->head);
 	m3u_file->tail = NULL;
-	FREE(m3u_file->filename);
-	FREE(m3u_file);
+	free(m3u_file->filename);
+	m3u_file->filename = NULL;
+	free(m3u_file);
+	m3u_file = NULL;
 
 	if (error == 1) {
 		return EXIT_FAILURE;

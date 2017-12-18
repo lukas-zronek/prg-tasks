@@ -10,8 +10,6 @@
 #ifndef _M3UEDIT_UTIL_H_
 #define _M3UEDIT_UTIL_H_
 
-#define FREE(val) free(val); val = NULL;
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

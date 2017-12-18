@@ -33,7 +33,8 @@ int main(int argc, char **argv)
 		}
 
 		printf("%s", text);
-		FREE(text);
+		free(text);
+		text = NULL;
 
 		while (read_int(PROMPT, &n, MSGMAX) == 1) {
 		}

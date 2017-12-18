@@ -26,8 +26,6 @@
 
 #define MAX_TRIES 10
 
-#define FREE(val) free(val); val = NULL;
-
 struct linked_list {
 	char *line;
 	struct linked_list *next;
@@ -81,7 +79,8 @@ int main(int argc, char *argv[])
 	if (buffer == NULL) {
 		fprintf(stderr, "Error: malloc failed.\n");
 		if (argc == 3) {
-			FREE(word);
+			free(word);
+			word = NULL;
 		}
 		return EXIT_FAILURE;
 	}
@@ -93,9 +92,11 @@ int main(int argc, char *argv[])
 	if (guessed_word == NULL) {
 		fprintf(stderr, "Error: malloc failed.\n");
 		if (argc == 3) {
-			FREE(word);
+			free(word);
+			word = NULL;
 		}
-		FREE(buffer);
+		free(buffer);
+		buffer = NULL;
 	}
 
 	memset(guessed_word, 0, word_length + 1);
@@ -151,12 +152,15 @@ int main(int argc, char *argv[])
 					}
 
 
-					FREE(buffer);
+					free(buffer);
+					buffer = NULL;
 
-					FREE(guessed_word);
+					free(guessed_word);
+					guessed_word = NULL;
 
 					if (argc == 3) {
-						FREE(word);
+						free(word);
+						word = NULL;
 					}
 
 					return EXIT_SUCCESS;
@@ -197,12 +201,15 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	FREE(buffer);
+	free(buffer);
+	buffer = NULL;
 
-	FREE(guessed_word);
+	free(guessed_word);
+	guessed_word = NULL;
 
 	if (argc == 3) {
-		FREE(word);
+		free(word);
+		word = NULL;
 	}
 
 	return EXIT_SUCCESS;
@@ -239,7 +246,8 @@ char *random_word_from_file(const char *filename)
 
 	if (input_file == NULL) {
 		perror("Error: Could not read file");
-		FREE(buffer);
+		free(buffer);
+		buffer = NULL;
 		return NULL;
 	}
 
@@ -269,7 +277,8 @@ char *random_word_from_file(const char *filename)
 		if (strncpy(line, buffer, line_length + 1) != line) {
 			fprintf(stderr, "Error: strncpy failed.\n");
 			error = 1;
-			FREE(line);
+			free(line);
+			line = NULL;
 			break;
 		}
 
@@ -278,7 +287,8 @@ char *random_word_from_file(const char *filename)
 		if (next == NULL) {
 			fprintf(stderr, "Error: malloc failed\n");
 			error = 1;
-			FREE(line);
+			free(line);
+			line = NULL;
 			break;
 		}
 
@@ -299,7 +309,8 @@ char *random_word_from_file(const char *filename)
 	line = NULL;
 	current = next = NULL;
 
-	FREE(buffer);
+	free(buffer);
+	buffer = NULL;
 
 	if (input_file != NULL && fclose(input_file) != 0) {
 		perror("Error: closing input file failed");
@@ -330,7 +341,8 @@ char *random_word_from_file(const char *filename)
 					fprintf(stderr, "Error: malloc failed.\n");
 				} else {
 					if (strncpy(result, current->line, result_length + 1) != result) {
-						FREE(result);
+						free(result);
+						result = NULL;
 						break;
 					}
 				}
@@ -365,9 +377,10 @@ void free_linked_list(struct linked_list **p)
 	l = *p;
 
 	while (l != NULL) {
-		FREE(l->line);
+		free(l->line);
+		l->line = NULL;
 		n = l->next;
-		FREE(l);
+		free(l);
 		l = n;
 	}
 
