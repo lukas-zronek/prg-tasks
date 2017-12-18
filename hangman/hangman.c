@@ -14,16 +14,6 @@
 #include <time.h>
 #include <unistd.h>
 
-#ifdef __linux__
-#include <linux/limits.h>
-#else
-#include <limits.h>
-#endif
-
-#ifndef ARG_MAX
-#define ARG_MAX 1024
-#endif
-
 #define MAX_TRIES 10
 
 struct linked_list {
@@ -34,6 +24,8 @@ struct linked_list {
 char *random_word_from_file(const char *);
 void string_to_upper(char *);
 void free_linked_list(struct linked_list **);
+
+static long arg_max;
 
 int main(int argc, char *argv[])
 {
@@ -48,6 +40,13 @@ int main(int argc, char *argv[])
 	int tries = 0;
 	int line_length = 0;
 	char *buffer = NULL;
+
+	arg_max = sysconf(_SC_ARG_MAX);
+
+	if (arg_max == -1) {
+		perror("sysconf");
+		return EXIT_FAILURE;
+	}
 
 	switch (argc) {
 		case 2:
@@ -74,7 +73,7 @@ int main(int argc, char *argv[])
 	string_to_upper(word);
 
 	/* sizeof (char) is assumed to be 1 byte */
-	buffer = (char *)malloc(ARG_MAX);
+	buffer = (char *)malloc(arg_max);
 	
 	if (buffer == NULL) {
 		fprintf(stderr, "Error: malloc failed.\n");
@@ -135,8 +134,8 @@ int main(int argc, char *argv[])
 		while (c == 0) {
 			printf("\n> ");
 
-			if (fgets(buffer, ARG_MAX, stdin) != NULL) {
-				line_length = strnlen(buffer, ARG_MAX - 1);
+			if (fgets(buffer, arg_max, stdin) != NULL) {
+				line_length = strnlen(buffer, arg_max - 1);
 				if (line_length == 2 && buffer[1] == '\n') {
 					c = buffer[0];
 				} else if (line_length > 2 && buffer[line_length - 2] == '!') {
@@ -235,7 +234,7 @@ char *random_word_from_file(const char *filename)
 	size_t result_length = 0;
 	
 	/* sizeof (char) is assumed to be 1 byte */
-	buffer = (char *)malloc(ARG_MAX);
+	buffer = (char *)malloc(arg_max);
 	
 	if (buffer == NULL) {
 		fprintf(stderr, "Error: malloc failed.\n");
@@ -251,13 +250,13 @@ char *random_word_from_file(const char *filename)
 		return NULL;
 	}
 
-	while (fgets(buffer, ARG_MAX, input_file) != NULL) {
-		line_length = strnlen(buffer, ARG_MAX - 1);
+	while (fgets(buffer, arg_max, input_file) != NULL) {
+		line_length = strnlen(buffer, arg_max - 1);
 
 		if (line_length < 2) {
 			continue;
-		} else if (line_length == (ARG_MAX - 1) && buffer[ARG_MAX - 2] != '\n') {
-			/* A warning is incorrectly reported if the word is exactly as large as ARG_MAX
+		} else if (line_length == (arg_max - 1) && buffer[arg_max - 2] != '\n') {
+			/* A warning is incorrectly reported if the word is exactly as large as arg_max
 			or when the line does not contain a newline. */
 			fprintf(stderr, "Warning: Input truncated.\n");
 		} else if (buffer[line_length - 1] == '\n') {
@@ -334,7 +333,7 @@ char *random_word_from_file(const char *filename)
 
 	for (i = 0; i < list_length; i++) {
 		if (i == random_number) {
-			result_length = strnlen(current->line, ARG_MAX);
+			result_length = strnlen(current->line, arg_max);
 			if (result_length > 0) {
 				result = (char *)malloc(result_length + 1);
 				if (result == NULL) {
