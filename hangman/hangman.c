@@ -316,7 +316,7 @@ char *random_word_from_file(const char *filename)
 		error = 1;
 	}
 
-	if (error == 1) {
+	if (error == 1 || list_length < 1) {
 		free_linked_list(&head);
 		return NULL;
 	}
