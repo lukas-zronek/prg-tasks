@@ -137,10 +137,8 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if (saved_input != NULL) {
-		free(saved_input);
-		saved_input = NULL;
-	}
+	free(saved_input);
+	saved_input = NULL;
 
 cleanup_files:
 	if (output_file != NULL && fclose(output_file) != 0) {

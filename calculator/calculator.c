@@ -113,10 +113,8 @@ int main(void)
 		}
 	}
 
-	if (line != NULL) {
-		free(line);
-		line = NULL;
-	}
+	free(line);
+	line = NULL;
 
 	return EXIT_SUCCESS;
 }

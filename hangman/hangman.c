@@ -26,7 +26,7 @@
 
 #define MAX_TRIES 10
 
-#define SAFE_FREE(val) if (val != NULL) { free(val); val = NULL; }
+#define SAFE_FREE(val) free(val); val = NULL;
 
 struct linked_list {
 	char *line;
