@@ -16,7 +16,7 @@
 #include <errno.h>
 #include <assert.h>
 
-void print_usage();
+void print_usage(void);
 
 int main(void)
 {

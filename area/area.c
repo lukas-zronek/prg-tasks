@@ -13,11 +13,11 @@
 
 #define MAX_INPUT 256
 
-double rectangle();
-double triangle();
-double square();
-double circle();
-char input_char();
+double rectangle(void);
+double triangle(void);
+double square(void);
+double circle(void);
+char input_char(void);
 double *input_multiple_double(int, char *);
 
 char buffer[MAX_INPUT] = {0};
