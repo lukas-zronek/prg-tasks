@@ -96,6 +96,8 @@ int main(int argc, char *argv[])
 		}
 		free(buffer);
 		buffer = NULL;
+
+		return EXIT_FAILURE;
 	}
 
 	memset(guessed_word, 0, word_length + 1);
