@@ -69,7 +69,7 @@ int send_message(long int id, long int type, char *text)
 		return 1;
 	}
 
-	if (msgsnd(id, &m, text_length + 1, 0) == -1) {
+	if (msgsnd(id, &m, mtext_size, 0) == -1) {
 		perror("msgsnd");
 		return 1;
 	}
