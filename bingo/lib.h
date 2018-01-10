@@ -12,6 +12,7 @@
 #include <limits.h>
 #include <sys/time.h>
 #include <assert.h>
+#include <errno.h>
 
 #define MTYPE 42
 #define MSGMAX 95 /* must be greater than 1 */

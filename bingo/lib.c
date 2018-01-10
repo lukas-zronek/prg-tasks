@@ -303,7 +303,13 @@ int get_rand(int max)
 
 	if (seeded == 0) {
 		struct timeval t1;
-		gettimeofday(&t1, NULL);
+		if (gettimeofday(&t1, NULL) != 0) {
+			perror("gettimeofday");
+			errno = 0;
+			fprintf(stderr, "Warning: get_rand: No seed value is provided.");
+			t1.tv_usec = 1;
+			t1.tv_sec = 1;
+		}
 		srand(t1.tv_usec * t1.tv_sec);
 		seeded = 1;
 	}
