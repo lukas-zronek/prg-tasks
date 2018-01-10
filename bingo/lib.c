@@ -138,6 +138,7 @@ int receive_int(long int id, long int type, int *n)
 {
 	char *text = NULL;
 	char *endptr = NULL;
+	int error = 0;
 
 	*n = 0;
 
@@ -151,10 +152,14 @@ int receive_int(long int id, long int type, int *n)
 
         if (*endptr != '\0') {
                 fprintf(stderr, "strtod failed\n");
-		return 1;
+		error = 1;
         }
 
-	return 0;
+	free(text);
+	text = NULL;
+	endptr = NULL;
+
+	return error;
 }
 
 /*
