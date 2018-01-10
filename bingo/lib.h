@@ -11,9 +11,10 @@
 #include <sys/msg.h>
 #include <limits.h>
 #include <sys/time.h>
+#include <assert.h>
 
 #define MTYPE 42
-#define MSGMAX 1024 /* must be greater than 0 */
+#define MSGMAX 1024 /* must be greater than 1 */
 #define SEM_PERM 0600
 #define MSG_ID_FILE "./keyfile"
 

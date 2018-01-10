@@ -42,30 +42,34 @@ int delete_queue(long int id)
 int send_message(long int id, long int type, char *text)
 {
 	msg m;
-	size_t text_size = 0;
+	size_t text_length = 0;
+	size_t mtext_size = sizeof(m.mtext);
 
 	m.mtype = type;
 
-	text_size = strlen(text) + 1;
+	assert(mtext_size > 1);
 
-	if (text_size > MSGMAX) {
-		text_size = MSGMAX;
+	text_length = strnlen(text, mtext_size - 1);
 
-		fprintf(stderr, "Warning: mtext truncated.\n");
+	if (text_length == 0) {
+		fprintf(stderr, "Error: message text has zero length.\n");
+		return 1;
 	}
 
-	if (strncpy(m.mtext, text, text_size) != m.mtext) {
+	if (text_length == mtext_size - 1) {
+		if (text[text_length] != '\0') {
+			fprintf(stderr, "Warning: message text truncated.\n");
+		}
+	}
+
+	memset(m.mtext, 0, mtext_size);
+
+	if (strncpy(m.mtext, text, text_length) != m.mtext) {
 		fprintf(stderr, "Error: Copying text failed.\n");
 		return 1;
 	}
 
-	if (MSGMAX > 0) {
-		m.mtext[MSGMAX - 1] = '\0';
-	} else {
-		m.mtext[0] = '\0';
-	}
-
-	if (msgsnd(id, &m, text_size, 0) == -1) {
+	if (msgsnd(id, &m, text_length + 1, 0) == -1) {
 		perror("msgsnd");
 		return 1;
 	}
@@ -77,21 +81,33 @@ char *receive_message(long int id, long int type)
 {
 	msg m;
 	char *s = NULL;
-	size_t s_size = 0;
+	size_t s_length = 0;
+	size_t mtext_size = sizeof(m.mtext);
 
-	if (msgrcv(id, &m, MSGMAX, type, 0) == -1) {
+	assert(mtext_size > 1);
+
+	if (msgrcv(id, &m, mtext_size, type, 0) == -1) {
 		perror("msgrcv");
 	} else {
-		s_size = strlen(m.mtext) + 1;
+		s_length = strnlen(m.mtext, mtext_size - 1);
 
-		s = (char *)malloc(s_size);
+		if (s_length == 0) {
+			fprintf(stderr, "Error: message text has zero length.\n");
+			return NULL;
+		} else if (s_length == mtext_size - 1) {
+			if (m.mtext[s_length] != '\0') {
+				fprintf(stderr, "Warning: message text truncated.\n");
+			}
+		}
+
+		s = (char *)calloc(s_length + 1, sizeof(char));
 
 		if (s == NULL) {
 			fprintf(stderr, "Allocating string failed.\n");
 			return NULL;
 		}
 
-		if (strncpy(s, m.mtext, s_size) != s) {
+		if (strncpy(s, m.mtext, s_length) != s) {
 			fprintf(stderr, "Error: copying mtext failed.\n");
 			free(s);
 			s = NULL;
