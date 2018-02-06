@@ -29,6 +29,8 @@ int main(void)
 	double number2 = 0;
 	double result = 0;
 
+	printf("Press control-D to quit:\n");
+
 	while (1) {
 		printf("> ");
 
