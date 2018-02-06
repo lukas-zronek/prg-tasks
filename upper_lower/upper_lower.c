@@ -124,6 +124,12 @@ char *read_line()
 	}
 
 	if (fgets(line, MAX_INPUT, stdin) == NULL) {
+		if (ferror(stdin)) {
+			perror("Error: fgets failed");
+		}
+
+		clearerr(stdin);
+
 		free(line);
 		line = NULL;
 		return NULL;
