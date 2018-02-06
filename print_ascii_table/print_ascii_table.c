@@ -108,7 +108,7 @@ int main(void)
 
 char *read_line(char *buf, size_t buf_size)
 {
-	int length = 0;
+	size_t length = 0;
 	char ch = 0;
 
 	if (buf == NULL || buf_size == 0) {
