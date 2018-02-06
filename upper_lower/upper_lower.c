@@ -25,7 +25,6 @@ int main(void)
 {
 	char *line = NULL;
 	char **all_lines = NULL;
-	char empty_line[] = "";
 	char c = 0;
 	int quit = 0;
 	int i = 0;
@@ -42,11 +41,11 @@ int main(void)
 
 	printf("Enter your text (terminate with ENTER twice) >\n");
 
-	for (i = 0; i < MAX_LINES; i++) {
+	for (i = 0; i < MAX_LINES - 1; i++) {
 		line = read_line();
 
 		if (line == NULL) {
-			all_lines[i] = empty_line;
+			continue;
 		} else {
 			if (strncmp(line, "\n", 2) == 0) {
 				quit++;
@@ -54,6 +53,7 @@ int main(void)
 				quit = 1;
 			}
 			all_lines[i] = line;
+			all_lines[i + 1] = NULL;
 		}
 
 		if (quit >= 2) {
@@ -80,9 +80,14 @@ int main(void)
 	while (all_lines[i] != NULL) {
 		if (convertCase(all_lines[i], c) != NULL) {
 			printf("%s", all_lines[i]);
+			free(all_lines[i]);
+			all_lines[i] = NULL;
 		}
 		i++;
 	}
+
+	free(all_lines);
+	all_lines = NULL;
 
 	return EXIT_SUCCESS;
 }
@@ -119,6 +124,8 @@ char *read_line()
 	}
 
 	if (fgets(line, MAX_INPUT, stdin) == NULL) {
+		free(line);
+		line = NULL;
 		return NULL;
 	}
 
