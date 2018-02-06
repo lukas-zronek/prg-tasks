@@ -10,8 +10,10 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <ctype.h>
+#include <assert.h>
+#include <limits.h>
 
-#define MAX_INPUT 12
+#define MAX_READ_LINE_INPUT 12
 
 #define ASCII 1
 #define HEX 2
@@ -26,13 +28,16 @@ char *dec2bin(int, int);
 
 int main(void)
 {
-	char input_buffer[MAX_INPUT] = {0};
+	char input_buffer[MAX_READ_LINE_INPUT] = {0};
 	size_t input_length = 0;
 	int i = 0;
 	int format = 0;
 	long start = 0, end = 0;
 	char *nonprintable_ascii_table[] = {"NUL", "SOH", "STX", "ETX", "EOT", "ENQ", "ACK", "BEL", "BS", "HT", "LF", "VT", "FF", "CR", "SO", "SI", "DLE", "DC1", "DC2", "DC3", "DC4", "NAK", "SYN", "ETB", "CAN", "EM", "SUB", "ESC", "FS", "GS", "RS", "US"};
 	char *bin_string = NULL;
+
+	assert(MAX_READ_LINE_INPUT > 0);
+	assert(MAX_READ_LINE_INPUT <= INT_MAX);
 
 	while (format == 0) {
 		printf("Specify the output format (A)scii, (H)ex, (B)in, (O)ctal, (D)ec > ");
@@ -106,11 +111,17 @@ char *read_line(char *buf, size_t buf_size)
 	int length = 0;
 	char ch = 0;
 
-	if (buf == NULL || buf_size <= 0) {
+	if (buf == NULL || buf_size == 0) {
 		return NULL;
 	}
 
-	if (NULL != fgets(buf, buf_size, stdin)) {
+	/* fgets expects an int as second parameter and not a size_t */
+	if (buf_size > INT_MAX) {
+		fprintf(stderr, "Warning: Input truncated.\n");
+		buf_size = INT_MAX;
+	}
+
+	if (NULL != fgets(buf, (int)buf_size, stdin)) {
 		length = strlen(buf);
 
 		if (length > 0) {
@@ -140,7 +151,7 @@ char *read_line(char *buf, size_t buf_size)
 }
 
 long read_int(char *prompt) {
-	char input_buffer[MAX_INPUT] = {0};
+	char input_buffer[MAX_READ_LINE_INPUT] = {0};
 	long n = -1;
 
 	while (n == -1) {
