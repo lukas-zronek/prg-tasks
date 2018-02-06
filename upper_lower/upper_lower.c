@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <assert.h>
 
 #define MAX_INPUT 256
 #define MAX_LINES 100
@@ -29,10 +30,13 @@ int main(void)
 	int quit = 0;
 	int i = 0;
 
-	all_lines = malloc(sizeof(char *) * MAX_LINES);
+	assert(MAX_LINES > 0);
+	assert(MAX_INPUT > 0);
+
+	all_lines = calloc(MAX_LINES, sizeof(char *));
 
 	if (all_lines == NULL) {
-		fprintf(stderr, "malloc of all_lines failed\n");
+		fprintf(stderr, "Allocating memory for all_lines failed\n");
 		return EXIT_FAILURE;
 	}
 
@@ -107,10 +111,10 @@ char *read_line()
 {
 	char *line = NULL;
 
-	line = malloc(sizeof(char) * MAX_INPUT);
+	line = calloc(MAX_INPUT, sizeof(char));
 
 	if (line == NULL) {
-		fprintf(stderr, "malloc failed\n");
+		fprintf(stderr, "Allocating memory failed\n");
 		return NULL;
 	}
 
