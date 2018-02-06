@@ -18,7 +18,7 @@ double triangle(void);
 double square(void);
 double circle(void);
 char input_char(void);
-double *input_multiple_double(int, char *);
+double *input_multiple_double(size_t, char *);
 
 char buffer[MAX_INPUT] = {0};
 
@@ -163,17 +163,21 @@ char input_char()
 	return -1;
 }
 
-double *input_multiple_double(int count, char *prompt)
+double *input_multiple_double(size_t count, char *prompt)
 {
 	char *token = NULL;
 	double *result = NULL;
 	double d = 0;
 	int i = 0;
 
-	result = malloc(count * sizeof(double));
+	if (count == 0) {
+		return NULL;
+	}
+
+	result = calloc(count, sizeof (double));
 
 	if (result == NULL) {
-		fprintf(stderr, "malloc failed\n");
+		fprintf(stderr, "Allocating memory failed\n");
 		return NULL;
 	}
 
