@@ -36,7 +36,7 @@ int main(void)
 		type = input_char();
 
 		switch (type) {
-			case EOF: return EXIT_FAILURE;
+			case '\0': return EXIT_FAILURE;
 			case 'R': result = rectangle(); break;
 			case 'T': result = triangle(); break;
 			case 'S': result = square(); break;
@@ -142,25 +142,26 @@ double circle()
 }
 
 /*
- * returns EOF on error
+ * returns NUL on error
  */
 char input_char()
 {
-	char c = 0;
+	char c = '\0';
 
 	if (fgets(buffer, MAX_INPUT, stdin) != NULL) {
 		if (sscanf(buffer, "%c", &c) == 1) {
 			c = toupper(c);
-			return c;
 		}
 	} else {
-		if (ferror(stdin)) {
+		if (feof(stdin)) {
+			c = EOF;
+		} else if (ferror(stdin)) {
 			perror("Error: fgets failed");
 		}
 		clearerr(stdin);
 	}
 
-	return EOF;
+	return c;
 }
 
 double *input_multiple_double(size_t count, char *prompt)
