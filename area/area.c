@@ -36,7 +36,7 @@ int main(void)
 		type = input_char();
 
 		switch (type) {
-			case EOF: return 1;
+			case EOF: return EXIT_FAILURE;
 			case 'R': result = rectangle(); break;
 			case 'T': result = triangle(); break;
 			case 'S': result = square(); break;
@@ -52,7 +52,7 @@ int main(void)
 		}
 	}
 
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 double rectangle()
