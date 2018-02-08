@@ -35,7 +35,7 @@ int main(void)
 
 		type = input_char();
 
-		if (type == -1) {
+		if (type == EOF) {
 			continue;
 		}
 
@@ -144,6 +144,9 @@ double circle()
 	return area;
 }
 
+/*
+ * returns EOF on error
+ */
 char input_char()
 {
 	char c = 0;
@@ -160,7 +163,7 @@ char input_char()
 		clearerr(stdin);
 	}
 
-	return -1;
+	return EOF;
 }
 
 double *input_multiple_double(size_t count, char *prompt)
