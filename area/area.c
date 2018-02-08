@@ -35,7 +35,7 @@ int main(void)
 
 		type = input_char();
 
-		switch (type) {
+		switch (toupper(type)) {
 			case '\0': return EXIT_FAILURE;
 			case 'R': result = rectangle(); break;
 			case 'T': result = triangle(); break;
@@ -149,8 +149,8 @@ char input_char()
 	char c = '\0';
 
 	if (fgets(buffer, MAX_INPUT, stdin) != NULL) {
-		if (sscanf(buffer, "%c", &c) == 1) {
-			c = toupper(c);
+		if (sscanf(buffer, "%c", &c) != 1) {
+			return EOF;
 		}
 	} else {
 		if (feof(stdin)) {
