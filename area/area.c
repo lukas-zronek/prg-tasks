@@ -35,11 +35,8 @@ int main(void)
 
 		type = input_char();
 
-		if (type == EOF) {
-			continue;
-		}
-
 		switch (type) {
+			case EOF: continue;
 			case 'R': result = rectangle(); break;
 			case 'T': result = triangle(); break;
 			case 'S': result = square(); break;
