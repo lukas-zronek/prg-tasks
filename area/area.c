@@ -48,7 +48,11 @@ int main(void)
 
 		while (quit != 'Y' && quit != 'N') {
 			printf("Do you want to quit ? (Y/N) > ");
-			quit = input_char();
+			quit = toupper(input_char());
+
+			if (quit == '\0') {
+				return EXIT_FAILURE;
+			}
 		}
 	}
 
